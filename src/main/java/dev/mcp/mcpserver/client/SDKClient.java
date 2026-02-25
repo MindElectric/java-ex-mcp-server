@@ -10,4 +10,36 @@ import io.modelcontextprotocol.spec.McpSchema.CallToolResult;
 import io.modelcontextprotocol.spec.McpSchema.ListToolsResult;
 
 public class SDKClient {
+    public static void main(String[] args) {
+        var transport = WebFluxSseClientTransport
+                .builder(WebClient.builder().baseUrl("http://localhost:8080"))
+                .build();
+        new SDKClient(transport).run();
+    }
+
+    private final McpClientTransport transport;
+
+    public SDKClient(McpClientTransport transport) {
+        this.transport = transport;
+    }
+
+    public void run() {
+        try(var client = McpClient.sync(this.transport).build()){
+            client.initialize();
+
+            // List and demonstrate tools
+            ListToolsResult toolsList = client.listTools();
+            System.out.println("Available Tools: " + toolsList);
+
+            client.ping();
+
+            CallToolResult resultAdd = client.callTool(new CallToolRequest("add", Map.of("a", 5.0, "b", 3.0)));
+
+            CallToolResult resultSubtract = client.callTool(new CallToolRequest("subtract", Map.of("a", 10.0, "b", 4.0)));
+
+            CallToolResult resultMultiply = client.callTool(new CallToolRequest("multiply", Map.of("a", 6.0, "b", 7.0)));
+
+            CallToolResult resultDivide = client.callTool(new CallToolRequest("divide", Map.of("a", 20.0, "b", 4.0)));
+        }
+    }
 }
