@@ -34,12 +34,19 @@ public class SDKClient {
             client.ping();
 
             CallToolResult resultAdd = client.callTool(new CallToolRequest("add", Map.of("a", 5.0, "b", 3.0)));
+            System.out.println("Add Result = " +  resultAdd);
 
             CallToolResult resultSubtract = client.callTool(new CallToolRequest("subtract", Map.of("a", 10.0, "b", 4.0)));
+            System.out.println("Subtract Result = " +  resultSubtract);
 
             CallToolResult resultMultiply = client.callTool(new CallToolRequest("multiply", Map.of("a", 6.0, "b", 7.0)));
+            System.out.println("Multiply Result = " +  resultMultiply);
 
             CallToolResult resultDivide = client.callTool(new CallToolRequest("divide", Map.of("a", 20.0, "b", 4.0)));
+            System.out.println("Divide Result = " +  resultDivide);
+
+            CallToolResult resultHelp =  client.callTool(new CallToolRequest("help", Map.of()));
+            System.out.println("Help Result = " +  resultHelp);
         }
     }
 }
